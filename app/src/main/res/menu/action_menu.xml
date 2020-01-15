@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/file_share"
+        android:orderInCategory="100"
+        android:title="Send File"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_download"
+        android:icon="@drawable/file_download"
+        android:orderInCategory="100"
+        android:title="Download File"
+        app:showAsAction="always" />
+
+
+    <item
+        android:id="@+id/action_userlist"
+        android:icon="@drawable/userlist"
+        android:title="UserList"
+        android:titleCondensed="UserList"
+        app:showAsAction="always"></item>
+
+
+
+</menu>

@@ -211,8 +211,8 @@ We can get the list of files which are available to downloading by using the Enx
 EnxRoom.getAvailableFiles();
 ``` 
 
-## 5 Demo
+## 5 Trial
 
-Visit Demo Zone (https://portal.enablex.io/demo-zone/) to request a Guided Demo or Demo Access to different type of application available there.
+Try a quick Video Call: https://demo.enablex.io/
+Sign up for a free trial https://portal.enablex.io/cpaas/trial-sign-up/
 
-You may also try our Video Meeting and Webinar solutions here: https://web.enablex.io/ucaas/covid-19/

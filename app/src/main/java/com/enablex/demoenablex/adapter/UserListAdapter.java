@@ -1,8 +1,10 @@
 package com.enablex.demoenablex.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +25,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     Context context;
 
     public UserListAdapter(Context context, List<UserListModels> participantList, UserItemClickListener userItemClickListener) {
-        this.userItemClickListener=userItemClickListener;
-        this.participantList= (ArrayList<UserListModels>) participantList;
-        this.context=context;
+        this.userItemClickListener = userItemClickListener;
+        this.participantList = (ArrayList<UserListModels>) participantList;
+        this.context = context;
     }
 
     @NonNull
@@ -38,9 +40,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     @Override
     public void onBindViewHolder(@NonNull UserListViewHolder holder, int position) {
         holder.userTV.setText(checkNullValue(participantList.get(position).getName()));
-        if(checkNullValue(participantList.get(position).getRole()).equalsIgnoreCase("moderator")){
+        if (checkNullValue(participantList.get(position).getRole()).equalsIgnoreCase("moderator")) {
             holder.roleIV.setImageResource(R.drawable.moderator_icon);
-        }else {
+        } else {
             holder.roleIV.setImageResource(R.drawable.participant_icon);
         }
     }
@@ -57,15 +59,15 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
 
         public UserListViewHolder(View itemView) {
             super(itemView);
-            roleIV=(ImageView) itemView.findViewById(R.id.roleIV);
-            shareFileIV=(ImageView)itemView.findViewById(R.id.shareFileIV);
-            userTV=(TextView) itemView.findViewById(R.id.userTV);
+            roleIV = (ImageView) itemView.findViewById(R.id.roleIV);
+            shareFileIV = (ImageView) itemView.findViewById(R.id.shareFileIV);
+            userTV = (TextView) itemView.findViewById(R.id.userTV);
             shareFileIV.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()){
+            switch (view.getId()) {
                 case R.id.shareFileIV:
                     userItemClickListener.onFileClick(getLayoutPosition());
                     break;
@@ -81,7 +83,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         return "";
     }
 
-    public interface UserItemClickListener{
+    public interface UserItemClickListener {
         void onFileClick(int position);
     }
 }

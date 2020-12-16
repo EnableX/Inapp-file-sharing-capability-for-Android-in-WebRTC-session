@@ -7,13 +7,14 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,8 +50,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import enx_rtc_android.Controller.EnxActiveTalkerViewObserver;
 import enx_rtc_android.Controller.EnxFileShare;
 import enx_rtc_android.Controller.EnxFileShareObserver;
 import enx_rtc_android.Controller.EnxPlayerView;
@@ -63,7 +64,7 @@ import enx_rtc_android.Controller.EnxStreamObserver;
 
 
 public class VideoConferenceActivity extends AppCompatActivity
-        implements EnxRoomObserver, EnxStreamObserver, View.OnClickListener, EnxReconnectObserver, EnxFileShareObserver, DownloadFileAdapter.DownloadFileClickListener, UserListAdapter.UserItemClickListener {
+        implements EnxRoomObserver, EnxStreamObserver, View.OnClickListener, EnxReconnectObserver, EnxFileShareObserver, DownloadFileAdapter.DownloadFileClickListener, EnxActiveTalkerViewObserver, UserListAdapter.UserItemClickListener {
     EnxRtc enxRtc;
     String token;
     String name;
@@ -88,6 +89,7 @@ public class VideoConferenceActivity extends AppCompatActivity
     UserListAdapter userListAdapter;
     List<UserListModels> participantList;
     private String mFileName;
+    RecyclerView mRecyclerView;
     String[] PERMISSIONS = {
             android.Manifest.permission.CAMERA,
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -117,6 +119,7 @@ public class VideoConferenceActivity extends AppCompatActivity
             enxRooms.publish(localStream);
             enxRooms.setReconnectObserver(this);
             enxRooms.setFileShareObserver(this);
+            enxRooms.setActiveTalkerViewObserver(this::onActiveTalkerList);
         }
         try {
             String localClientId = jsonObject.getString("clientId");
@@ -220,27 +223,15 @@ public class VideoConferenceActivity extends AppCompatActivity
     }
 
     @Override
-    public void onActiveTalkerList(JSONObject jsonObject) {
-        //received when Active talker update happens
-        try {
-            Map<String, EnxStream> map = enxRooms.getRemoteStreams();
-            JSONArray jsonArray = jsonObject.getJSONArray("activeList");
-            if (jsonArray.length() == 0) {
-                View temp = participant.getChildAt(0);
-                participant.removeView(temp);
-                return;
-            } else {
-                JSONObject jsonStreamid = jsonArray.getJSONObject(0);
-                String streamID = jsonStreamid.getString("streamId");
-                EnxStream stream = map.get(streamID);
-                if (enxPlayerViewRemote == null) {
-                    enxPlayerViewRemote = new EnxPlayerView(VideoConferenceActivity.this, EnxPlayerView.ScalingType.SCALE_ASPECT_BALANCED, false);
-                    stream.attachRenderer(enxPlayerViewRemote);
-                    participant.addView(enxPlayerViewRemote);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void onActiveTalkerList(RecyclerView recyclerView) {
+        mRecyclerView = recyclerView;
+        if (recyclerView == null) {
+            participant.removeAllViews();
+
+        } else {
+            participant.removeAllViews();
+            participant.addView(recyclerView);
+
         }
     }
 
@@ -455,7 +446,7 @@ public class VideoConferenceActivity extends AppCompatActivity
         gson = new Gson();
         getSupportActionBar().setTitle("QuickApp");
         enxRtc = new EnxRtc(this, this, this);
-        localStream = enxRtc.joinRoom(token, getLocalStreamJsonObject(), getReconnectInfo(), null);
+        localStream = enxRtc.joinRoom(token, getLocalStreamJsonObject(), getReconnectInfo(), new JSONArray());
         enxPlayerView = new EnxPlayerView(this, EnxPlayerView.ScalingType.SCALE_ASPECT_BALANCED, true);
         participantList = new ArrayList<>();
         userListAdapter = new UserListAdapter(this, participantList, this);
@@ -491,11 +482,9 @@ public class VideoConferenceActivity extends AppCompatActivity
             jsonObject.put("audio", true);
             jsonObject.put("video", true);
             jsonObject.put("data", false);
-            jsonObject.put("maxVideoBW", 400); //2048
-            jsonObject.put("minVideoBW", 300);
             JSONObject videoSize = new JSONObject();
-            videoSize.put("minWidth", 720);
-            videoSize.put("minHeight", 480);
+            videoSize.put("minWidth", 320);
+            videoSize.put("minHeight", 180);
             videoSize.put("maxWidth", 1280);
             videoSize.put("maxHeight", 720);
             jsonObject.put("videoSize", videoSize);
@@ -518,9 +507,24 @@ public class VideoConferenceActivity extends AppCompatActivity
     public JSONObject getReconnectInfo() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("allow_reconnect", true);
-            jsonObject.put("number_of_attempts", 3);
-            jsonObject.put("timeout_interval", 15);
+            jsonObject.put("allow_reconnect",true);
+            jsonObject.put("number_of_attempts",3);
+            jsonObject.put("timeout_interval",15);
+            jsonObject.put("activeviews","view");//view
+
+            JSONObject object = new JSONObject();
+            object.put("audiomute",true);
+            object.put("videomute",true);
+            object.put("bandwidth",true);
+            object.put("screenshot",true);
+            object.put("avatar",true);
+
+            object.put("iconColor", getResources().getColor(R.color.colorPrimary));
+            object.put("iconHeight",30);
+            object.put("iconWidth",30);
+            object.put("avatarHeight",200);
+            object.put("avatarWidth",200);
+            jsonObject.put("playerConfiguration",object);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -661,18 +665,57 @@ public class VideoConferenceActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFileDownloaded(String s) {
+    public void onFileUploadCancelled(JSONObject jsonObject) {
 
-        try {
-            if (s.contains("base64")){
-                saveFile(s);
-            }
-            if (progressDialog != null) {
-                progressDialog.dismiss();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    }
+
+    @Override
+    public void onFileDownloaded(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onFileDownloadCancelled(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onInitFileDownload(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onConferencessExtended(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onConferenceRemainingDuration(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onAckDropUser(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onAckDestroy(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onAckPinUsers(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onAckUnpinUsers(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onPinnedUsers(JSONObject jsonObject) {
 
     }
 
@@ -701,7 +744,7 @@ public class VideoConferenceActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.action_share:
                 if (enxRooms != null) {
-                    enxRooms.sendFiles(EnxFileShare.Position.TOP, true, null);
+                    enxRooms.sendFiles(true, null,this);
                 }
                 break;
             case R.id.action_download:
@@ -836,7 +879,7 @@ public class VideoConferenceActivity extends AppCompatActivity
         if (enxRooms != null) {
             List<String> list = new ArrayList<>();
             list.add(participantList.get(position).getClientId());
-            enxRooms.sendFiles(EnxFileShare.Position.TOP, false, list);
+            enxRooms.sendFiles(false, list,this);
         }
     }
 }

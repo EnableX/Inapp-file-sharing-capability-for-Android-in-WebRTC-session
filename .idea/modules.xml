@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/InAppFileSharing.iml" filepath="$PROJECT_DIR$/.idea/modules/InAppFileSharing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Enx-Rtc-Android-1.9.5 2/InAppFileSharing.Enx-Rtc-Android-1.9.5_2.iml" filepath="$PROJECT_DIR$/.idea/modules/Enx-Rtc-Android-1.9.5 2/InAppFileSharing.Enx-Rtc-Android-1.9.5_2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/InAppFileSharing.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/InAppFileSharing.app.iml" />
+    </modules>
+  </component>
+</project>

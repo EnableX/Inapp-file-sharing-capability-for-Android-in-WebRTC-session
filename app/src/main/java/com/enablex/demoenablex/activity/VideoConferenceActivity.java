@@ -720,6 +720,26 @@ public class VideoConferenceActivity extends AppCompatActivity
     }
 
     @Override
+    public void onRoomAwaited(EnxRoom enxRoom, JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onUserAwaited(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onAckForApproveAwaitedUser(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onAckForDenyAwaitedUser(JSONObject jsonObject) {
+
+    }
+
+    @Override
     public void onFileDownloadFailed(JSONObject jsonObject) {
         Log.e("onFileDownloadFailed", jsonObject.toString());
         if (progressDialog != null) {

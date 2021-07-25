@@ -52,7 +52,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import enx_rtc_android.Controller.EnxActiveTalkerViewObserver;
-import enx_rtc_android.Controller.EnxFileShare;
 import enx_rtc_android.Controller.EnxFileShareObserver;
 import enx_rtc_android.Controller.EnxPlayerView;
 import enx_rtc_android.Controller.EnxReconnectObserver;
@@ -187,6 +186,8 @@ public class VideoConferenceActivity extends AppCompatActivity
             e.printStackTrace();
         }
     }
+
+
 
     @Override
     public void onPublishedStream(EnxStream enxStream) {
@@ -614,6 +615,8 @@ public class VideoConferenceActivity extends AppCompatActivity
         }
     }
 
+
+
     @Override
     public void onUserReconnectSuccess(EnxRoom enxRoom, JSONObject jsonObject) {
         // received when reconnect successfully completed
@@ -736,6 +739,26 @@ public class VideoConferenceActivity extends AppCompatActivity
 
     @Override
     public void onAckForDenyAwaitedUser(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onAckAddSpotlightUsers(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onAckRemoveSpotlightUsers(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onUpdateSpotlightUsers(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onRoomBandwidthAlert(JSONObject jsonObject) {
 
     }
 

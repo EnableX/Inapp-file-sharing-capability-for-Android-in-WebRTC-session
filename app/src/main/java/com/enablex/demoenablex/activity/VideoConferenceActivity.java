@@ -115,10 +115,13 @@ public class VideoConferenceActivity extends AppCompatActivity
         //received when user connected with Enablex room
         enxRooms = enxRoom;
         if (enxRooms != null) {
+            enxPlayerView = new EnxPlayerView(this, EnxPlayerView.ScalingType.SCALE_ASPECT_BALANCED, true);
+            localStream.attachRenderer(enxPlayerView);
+            moderator.addView(enxPlayerView);
             enxRooms.publish(localStream);
             enxRooms.setReconnectObserver(this);
             enxRooms.setFileShareObserver(this);
-            enxRooms.setActiveTalkerViewObserver(this::onActiveTalkerList);
+            enxRooms.setActiveTalkerViewObserver(this);
         }
         try {
             String localClientId = jsonObject.getString("clientId");
@@ -223,18 +226,7 @@ public class VideoConferenceActivity extends AppCompatActivity
         this.finish();
     }
 
-    @Override
-    public void onActiveTalkerList(RecyclerView recyclerView) {
-        mRecyclerView = recyclerView;
-        if (recyclerView == null) {
-            participant.removeAllViews();
 
-        } else {
-            participant.removeAllViews();
-            participant.addView(recyclerView);
-
-        }
-    }
 
     @Override
     public void onEventError(JSONObject jsonObject) {
@@ -265,6 +257,11 @@ public class VideoConferenceActivity extends AppCompatActivity
     @Override
     public void onUserDataReceived(JSONObject jsonObject) {
         //received when custom chat data received
+    }
+
+    @Override
+    public void onUserStartTyping(boolean b) {
+
     }
 
     @Override
@@ -448,11 +445,9 @@ public class VideoConferenceActivity extends AppCompatActivity
         getSupportActionBar().setTitle("QuickApp");
         enxRtc = new EnxRtc(this, this, this);
         localStream = enxRtc.joinRoom(token, getLocalStreamJsonObject(), getReconnectInfo(), new JSONArray());
-        enxPlayerView = new EnxPlayerView(this, EnxPlayerView.ScalingType.SCALE_ASPECT_BALANCED, true);
         participantList = new ArrayList<>();
         userListAdapter = new UserListAdapter(this, participantList, this);
-        localStream.attachRenderer(enxPlayerView);
-        moderator.addView(enxPlayerView);
+
         downloadFilesList = new ArrayList<>();
         progressDialog = new ProgressDialog(this);
     }
@@ -763,6 +758,11 @@ public class VideoConferenceActivity extends AppCompatActivity
     }
 
     @Override
+    public void onStopAllSharingACK(JSONObject jsonObject) {
+
+    }
+
+    @Override
     public void onFileDownloadFailed(JSONObject jsonObject) {
         Log.e("onFileDownloadFailed", jsonObject.toString());
         if (progressDialog != null) {
@@ -924,5 +924,23 @@ public class VideoConferenceActivity extends AppCompatActivity
             list.add(participantList.get(position).getClientId());
             enxRooms.sendFiles(false, list,this);
         }
+    }
+
+    @Override
+    public void onActiveTalkerView(RecyclerView recyclerView) {
+        mRecyclerView = recyclerView;
+        if (recyclerView == null) {
+            participant.removeAllViews();
+
+        } else {
+            participant.removeAllViews();
+            participant.addView(recyclerView);
+
+        }
+    }
+
+    @Override
+    public void onActiveTalkerView(RecyclerView recyclerView, EnxRoom enxRoom) {
+
     }
 }

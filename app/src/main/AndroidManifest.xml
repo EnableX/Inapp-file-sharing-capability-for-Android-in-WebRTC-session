@@ -28,7 +28,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.DashboardActivity"
-                  android:screenOrientation="portrait">
+                  android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,6 +37,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.VideoConferenceActivity"
-                  android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"
+            android:exported="false"/>
     </application>
 </manifest>

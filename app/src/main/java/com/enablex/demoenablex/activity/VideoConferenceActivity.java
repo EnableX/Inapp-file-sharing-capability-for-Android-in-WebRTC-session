@@ -447,7 +447,6 @@ public class VideoConferenceActivity extends AppCompatActivity
         localStream = enxRtc.joinRoom(token, getLocalStreamJsonObject(), getReconnectInfo(), new JSONArray());
         participantList = new ArrayList<>();
         userListAdapter = new UserListAdapter(this, participantList, this);
-
         downloadFilesList = new ArrayList<>();
         progressDialog = new ProgressDialog(this);
     }

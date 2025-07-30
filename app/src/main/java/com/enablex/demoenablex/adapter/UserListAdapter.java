@@ -67,10 +67,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.shareFileIV:
+
+                if(view.getId()== R.id.shareFileIV){
                     userItemClickListener.onFileClick(getLayoutPosition());
-                    break;
+
             }
 
         }

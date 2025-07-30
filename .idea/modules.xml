@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Inapp-file-sharing-capability-for-Android-in-WebRTC-session.iml" filepath="$PROJECT_DIR$/.idea/modules/Inapp-file-sharing-capability-for-Android-in-WebRTC-session.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Enx-Rtc-Android-1.9.5 2/Inapp-file-sharing-capability-for-Android-in-WebRTC-session.Enx-Rtc-Android-1.9.5_2.iml" filepath="$PROJECT_DIR$/.idea/modules/Enx-Rtc-Android-1.9.5 2/Inapp-file-sharing-capability-for-Android-in-WebRTC-session.Enx-Rtc-Android-1.9.5_2.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Inapp-file-sharing-capability-for-Android-in-WebRTC-session.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Inapp-file-sharing-capability-for-Android-in-WebRTC-session.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Inapp-file-sharing-capability-for-Android-in-WebRTC-session.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Inapp-file-sharing-capability-for-Android-in-WebRTC-session.app.androidTest.iml" />

@@ -255,24 +255,40 @@ public class VideoConferenceActivity extends AppCompatActivity
     }
 
     @Override
+    public void onACKSendMessage(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onMessageDelete(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onACKDeleteMessage(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onMessageUpdate(JSONObject jsonObject) {
+
+    }
+
+    @Override
+    public void onACKUpdateMessage(JSONObject jsonObject) {
+
+    }
+
+    @Override
     public void onUserDataReceived(JSONObject jsonObject) {
         //received when custom chat data received
     }
 
     @Override
-    public void onUserStartTyping(boolean b) {
+    public void onUserStartTyping(JSONObject jsonObject) {
 
     }
 
-    @Override
-    public void onSwitchedUserRole(JSONObject jsonObject) {
-        // received when user switch their role (from moderator  to participant)
-    }
-
-    @Override
-    public void onUserRoleChanged(JSONObject jsonObject) {
-        // received when user role changed successfully
-    }
 
     @Override
     public void onAudioEvent(JSONObject jsonObject) {
@@ -335,11 +351,11 @@ public class VideoConferenceActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.disconnect:
+        int id=view.getId();
+            if(id== R.id.disconnect) {
                 roomDisconnect();
-                break;
-            case R.id.mute:
+            }
+            else if(id== R.id.mute) {
                 if (localStream != null) {
                     if (!isAudioMuted) {
                         localStream.muteSelfAudio(true);
@@ -347,8 +363,8 @@ public class VideoConferenceActivity extends AppCompatActivity
                         localStream.muteSelfAudio(false);
                     }
                 }
-                break;
-            case R.id.video:
+            }
+            else if(id== R.id.video) {
                 if (localStream != null) {
                     if (!isVideoMuted) {
                         localStream.muteSelfVideo(true);
@@ -356,8 +372,8 @@ public class VideoConferenceActivity extends AppCompatActivity
                         localStream.muteSelfVideo(false);
                     }
                 }
-                break;
-            case R.id.camera:
+            }
+            else if(id== R.id.camera) {
                 if (localStream != null) {
                     if (!isVideoMuted) {
                         if (isFrontCamera) {
@@ -371,12 +387,12 @@ public class VideoConferenceActivity extends AppCompatActivity
                         }
                     }
                 }
-                break;
-            case R.id.volume:
+            }
+            else if(id== R.id.volume) {
                 if (enxRooms != null) {
                     showRadioButtonDialog();
                 }
-                break;
+
         }
     }
 
@@ -783,16 +799,16 @@ public class VideoConferenceActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_share:
+        int id=item.getItemId();
+            if(id== R.id.action_share) {
                 if (enxRooms != null) {
-                    enxRooms.sendFiles(true, null,this);
+                    enxRooms.sendFiles(true, null, this);
                 }
-                break;
-            case R.id.action_download:
+            }
+            else if(id== R.id.action_download) {
                 if (enxRooms != null) {
                     try {
-                        if(enxRooms.getAvailableFiles()!=null)
+                        if (enxRooms.getAvailableFiles() != null)
                             parseFilesData(enxRooms.getAvailableFiles());
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -814,8 +830,8 @@ public class VideoConferenceActivity extends AppCompatActivity
                         Toast.makeText(this, "No File Available.", Toast.LENGTH_SHORT).show();
                     }
                 }
-                break;
-            case R.id.action_userlist:
+            }
+            else if(id== R.id.action_userlist){
                 if (enxRooms != null) {
                     if (participantList.size() > 0) {
                         View vItem = findViewById(R.id.action_userlist);
@@ -832,7 +848,7 @@ public class VideoConferenceActivity extends AppCompatActivity
                         Toast.makeText(this, "No Participant present.", Toast.LENGTH_SHORT).show();
                     }
                 }
-              break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -940,6 +956,11 @@ public class VideoConferenceActivity extends AppCompatActivity
 
     @Override
     public void onActiveTalkerView(RecyclerView recyclerView, EnxRoom enxRoom) {
+
+    }
+
+    @Override
+    public void onAvailable(Integer integer) {
 
     }
 }

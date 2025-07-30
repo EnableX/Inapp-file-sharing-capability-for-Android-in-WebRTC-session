@@ -62,10 +62,10 @@ public class DownloadFileAdapter extends RecyclerView.Adapter<DownloadFileAdapte
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.file_list_item:
+
+                if(view.getId()== R.id.file_list_item){
                     downloadFileClickListener.onClickFile(getLayoutPosition());
-                    break;
+
             }
 
         }
